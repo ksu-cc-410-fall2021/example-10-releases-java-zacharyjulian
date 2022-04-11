@@ -56,8 +56,9 @@ jacocoTestReport {
 
 // Add tests to Javadoc
 javadoc {
-  classpath += project.sourceSets.test.compileClasspath
-  source += project.sourceSets.test.allJava
+  // classpath += project.sourceSets.test.compileClasspath
+  // source += project.sourceSets.test.allJava
+  destinationDir = file("${rootDir}/docs/")
 }
 
 // Force Checkstyle to be more current version
@@ -68,4 +69,39 @@ checkstyle {
 // Allow run to read from System.in
 run{
     standardInput = System.in
+}
+
+version = 'v0.0.1'
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Version': project.version,
+                   'Main-Class': 'guess.Main')
+    }
+    archivesBaseName = project.name
+    destinationDirectory = file("${rootDir}/dist")
+}
+
+tasks.named('sourcesJar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Version': project.version)
+    }
+    archivesBaseName = project.name
+    destinationDirectory = file("${rootDir}/dist")
+}
+
+tasks.named('javadocJar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Version': project.version)
+    }
+    archivesBaseName = project.name
+    destinationDirectory = file("${rootDir}/dist")
 }
